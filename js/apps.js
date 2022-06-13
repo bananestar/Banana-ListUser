@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   btnAddUser.addEventListener("click", function () {
     addUser();
-    listUser();
   });
 
   if (localStorage.length >= 1) {
@@ -115,6 +114,9 @@ function addUser() {
   const lname = document.getElementById("lname");
   const email = document.getElementById("email");
 
+  const regexName =
+    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/;
+  const regexEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   if (fname.value == "") {
     addUserForm();
     alert("first name is null");
@@ -128,7 +130,12 @@ function addUser() {
     alert("email is null");
   }
 
-  if (fname.value != "" || lname.value != "" || email.value != "") {
+  if (
+    (fname.value != "" || lname.value != "" || email.value != "") &&
+    fname.value.match(regexName) &&
+    lname.value.match(regexName) &&
+    email.value.match(regexEmail)
+  ) {
     const user = {
       fname: fname.value,
       lname: lname.value,
@@ -141,6 +148,8 @@ function addUser() {
       lname.value.replace(/\s+/g, "") + fname.value.replace(/\s+/g, "");
 
     localStorage.setItem(idUser, jsonObj);
+
+    listUser();
   }
 }
 
